@@ -20,6 +20,7 @@ Com as sequintes especificações técnicas:
 ○     Token expirado (mais de 30 minutos): { "mensagem": "Sessão inválida" }.
 
 Requisitos:
+
 ●     Persistência de dados.
 
 ●     Sistema de build com gerenciamento de dependências.
