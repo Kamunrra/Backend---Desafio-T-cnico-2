@@ -5,11 +5,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const db = require('./db'); // Caminho para o arquivo db.js
+const cors = require('cors'); // Adicionando o middleware CORS
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
+
+// Configurar o middleware CORS
+app.use(cors());
 
 // Middleware para verificar a autenticação por token
 const authenticateToken = (req, res, next) => {
@@ -23,13 +27,20 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, 'abc123', (err, user) => {
     if (err) {
-      console.log('Erro ao verificar token:', err.message);
-      return res.status(403).json({ mensagem: 'Sessão inválida' });
+      if (err.name === 'TokenExpiredError') {
+        console.log('Token expirado:', err.message);
+        return res.status(403).json({ mensagem: 'Sessão inválida' });
+      } else if (err.name === 'JsonWebTokenError') {
+        console.log('Token inválido:', err.message);
+        return res.status(401).json({ mensagem: 'Não autorizado' });
+      }
     }
     req.user = user;
     next();
   });
 };
+
+
 
 // Endpoint para cadastro de usuário (Sign Up)
 app.post('/signup', async (req, res) => {
@@ -109,7 +120,7 @@ app.post('/signup', async (req, res) => {
     return res.json(cadastroSucesso);
   } catch (error) {
     console.error('Erro interno:', error);
-    return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    return res.status(500).json({ mensagem: `Erro interno do servidor: ${error.message}` });
   }
 });
 
@@ -143,7 +154,7 @@ app.post('/signin', async (req, res) => {
 
     existingUser.ultimoLogin = new Date();
 
-    // Substitua a linha abaixo pela sua chave secreta
+   
     const token = jwt.sign(
       { id: existingUser.id, email: existingUser.email },
       'abc123',
@@ -212,5 +223,5 @@ app.get('/', (req, res) => {
 
 // Inicialização do servidor
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
