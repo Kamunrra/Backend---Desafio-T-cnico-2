@@ -1,4 +1,4 @@
-O objetivo aqui é criar uma API RESTful para autenticação de usuários, que permita operações de cadastro (sign up), autenticação (sign in) e recuperação de informações do usuário.
+O objetivo aqui é criar uma API RESTful utilizando JavaScript e SQL para autenticação de usuários, que permita operações de cadastro (sign up), autenticação (sign in) e recuperação de informações do usuário.
 Com as sequintes especificações técnicas:
 
 ●     Todos os endpoints devem aceitar e retornar apenas dados no formato JSON.
