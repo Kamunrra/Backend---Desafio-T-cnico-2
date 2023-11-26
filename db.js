@@ -1,8 +1,8 @@
-const sqlite3 = require('sqlite3').verbose();
+  const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 // Caminho para o arquivo do banco de dados SQLite
-const dbPath = path.resolve(__dirname, 'testebanco.db');
+const dbPath = path.resolve(__dirname, 'testebanco.db'); // Substitua 'mydatabase.db' pelo nome desejado
 
 // Cria ou abre a conexão com o banco de dados
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -43,5 +43,7 @@ createTable();
 
 // Exporta a instância do banco de dados para ser usada em outros arquivos
 module.exports = db;
+
+
 
 
